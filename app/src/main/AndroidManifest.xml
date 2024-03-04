@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -14,31 +14,39 @@
         android:theme="@style/Theme.FastfoodApp"
         tools:targetApi="31">
         <activity
-            android:name="com.fastfoodapp.activities.UserProfileActivity"
-            android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/SplashScreenTheme"
-            />
-        <activity
-            android:name="com.fastfoodapp.activities.ForgotPasswordActivity"
+            android:name=".ui.activities.SettingsActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme" />
         <activity
-            android:name="com.fastfoodapp.activities.BaseActivity"
+            android:name=".ui.activities.DashboardActivity"
+            android:exported="false"
+            android:label="@string/app_name" />
+        <activity
+            android:name=".ui.activities.UserProfileActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreenTheme" />
+        <activity
+            android:name=".ui.activities.ForgotPasswordActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreenTheme" />
+        <activity
+            android:name=".ui.activities.BaseActivity"
             android:exported="false" />
         <activity
-            android:name="com.fastfoodapp.activities.RegisterActivity"
+            android:name=".ui.activities.RegisterActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme" />
         <activity
-            android:name="com.fastfoodapp.activities.LoginActivity"
+            android:name=".ui.activities.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme" />
         <activity
-            android:name="com.fastfoodapp.activities.SplashActivity"
+            android:name=".ui.activities.SplashActivity"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/SplashScreenTheme">
@@ -49,7 +57,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.fastfoodapp.activities.MainActivity"
+            android:name=".ui.activities.MainActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
     </application>

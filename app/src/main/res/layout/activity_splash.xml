@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/img_splash_background"
-    tools:context="com.fastfoodapp.activities.SplashActivity">
+    tools:context="com.example.fastfoodapp.ui.activities.SplashActivity">
 
-    <com.fastfoodapp.utils.MSPTextViewBold
+    <com.example.fastfoodapp.utils.MSPTextViewBold
         android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -1,4 +1,4 @@
-package com.fastfoodapp
+package com.example.fastfoodapp
 
 import org.junit.Test
 

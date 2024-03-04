@@ -24,4 +24,6 @@
     <color name="white">#FFFFFFFF</color>
     <color name="colorWhite">#FFFFFFFF</color>
 
+    <color name="colorBorder">#E8E6E6</color>
+    <color name="colorDarkGrey">#878787</color>
 </resources>
