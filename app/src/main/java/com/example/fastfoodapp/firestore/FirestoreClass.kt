@@ -5,11 +5,12 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import com.example.fastfoodapp.ui.activities.LoginActivity
-import com.example.fastfoodapp.ui.activities.RegisterActivity
-import com.example.fastfoodapp.ui.activities.UserProfileActivity
+import androidx.fragment.app.Fragment
+import com.example.fastfoodapp.model.Item
 import com.example.fastfoodapp.model.User
-import com.example.fastfoodapp.ui.activities.SettingsActivity
+import com.example.fastfoodapp.ui.activities.*
+import com.example.fastfoodapp.ui.fragments.DashboardFragment
+import com.example.fastfoodapp.ui.fragments.ItemsFragment
 import com.example.fastfoodapp.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -100,7 +101,7 @@ class FirestoreClass {
                         activity.userLoggedInSuccess(user)
                     }
 
-                    is SettingsActivity ->{
+                    is SettingsActivity -> {
                         // TODO Step 7: Call the function of base class.
                         // Call a function of base activity for transferring the result to it.
                         activity.userDetailsSuccess(user)
@@ -163,11 +164,11 @@ class FirestoreClass {
     }
 
 
-    fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?) {
+    fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?, imageType: String) {
 
         //getting the storage reference
         val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
-            Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
+            imageType + System.currentTimeMillis() + "."
                     + Constants.getFileExtension(
                 activity,
                 imageFileURI
@@ -188,11 +189,15 @@ class FirestoreClass {
                     .addOnSuccessListener { uri ->
                         Log.e("Downloadable Image URL", uri.toString())
 
-                        // TODO Step 8: Pass the success result to base class.
+                        // Pass the success result to base class.
                         // START
                         // Here call a function of base activity for transferring the result to it.
                         when (activity) {
                             is UserProfileActivity -> {
+                                activity.imageUploadSuccess(uri.toString())
+                            }
+
+                            is AddItemActivity -> {
                                 activity.imageUploadSuccess(uri.toString())
                             }
                         }
@@ -206,6 +211,9 @@ class FirestoreClass {
                     is UserProfileActivity -> {
                         activity.hideProgressDialog()
                     }
+                    is AddItemActivity -> {
+                        activity.hideProgressDialog()
+                    }
                     is SettingsActivity -> {
                         activity.hideProgressDialog()
                     }
@@ -215,6 +223,128 @@ class FirestoreClass {
                     activity.javaClass.simpleName,
                     exception.message,
                     exception
+                )
+            }
+    }
+
+
+    fun uploadItemDetails(activity: AddItemActivity, itemInfo: Item) {
+
+        mFireStore.collection(Constants.ITEMS)
+            .document()
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
+            .set(itemInfo, SetOptions.merge())
+            .addOnSuccessListener {
+
+                // Here call a function of base activity for transferring the result to it.
+                activity.itemUploadSuccess()
+            }
+            .addOnFailureListener { e ->
+
+                activity.hideProgressDialog()
+
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while uploading the item details.",
+                    e
+                )
+            }
+    }
+
+
+    fun getitemsList(fragment: Fragment) {
+        // The collection name for itemS
+        mFireStore.collection(Constants.ITEMS)
+            .whereEqualTo(Constants.USER_ID, getCurrentUserID())
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the list of boards in the form of documents.
+                Log.e("items List", document.documents.toString())
+
+                // Here we have created a new instance for items ArrayList.
+                val itemsList: ArrayList<Item> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into items ArrayList.
+                for (i in document.documents) {
+
+                    val item = i.toObject(Item::class.java)
+                    item!!.item_id = i.id
+
+                    itemsList.add(item)
+                }
+
+                when (fragment) {
+                    is ItemsFragment -> {
+                        fragment.successItemsListFromFireStore(itemsList)
+                    }
+                }
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error based on the base class instance.
+                when (fragment) {
+                    is ItemsFragment -> {
+                        fragment.hideProgressDialog()
+                    }
+                }
+                Log.e("Get Item List", "Error while getting item list.", e)
+            }
+    }
+
+    fun getDashboardItemsList(fragment: DashboardFragment) {
+        // The collection name for PRODUCTS
+        mFireStore.collection(Constants.ITEMS)
+            .get() // Will get the documents snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the list of boards in the form of documents.
+                Log.e(fragment.javaClass.simpleName, document.documents.toString())
+
+                // Here we have created a new instance for Products ArrayList.
+                val productsList: ArrayList<Item> = ArrayList()
+
+                // A for loop as per the list of documents to convert them into Products ArrayList.
+                for (i in document.documents) {
+
+                    val product = i.toObject(Item::class.java)!!
+                    product.item_id = i.id
+                    productsList.add(product)
+                }
+
+                // Pass the success result to the base fragment.
+                fragment.successDashboardItemsList(productsList)
+            }
+            .addOnFailureListener { e ->
+                // Hide the progress dialog if there is any error which getting the dashboard items list.
+                fragment.hideProgressDialog()
+                Log.e(fragment.javaClass.simpleName, "Error while getting dashboard items list.", e)
+            }
+
+    }
+
+
+    fun deleteProduct(fragment: ItemsFragment, productId: String) {
+
+        mFireStore.collection(Constants.ITEMS)
+            .document(productId)
+            .delete()
+            .addOnSuccessListener {
+
+                // Notify the success result to the base class.
+                // START
+                // Notify the success result to the base class.
+                fragment.itemDeleteSuccess()
+                // END
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is an error.
+                fragment.hideProgressDialog()
+
+                Log.e(
+                    fragment.requireActivity().javaClass.simpleName,
+                    "Error while deleting the product.",
+                    e
                 )
             }
     }

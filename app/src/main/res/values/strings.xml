@@ -71,4 +71,28 @@
     <string name="btn_lbl_logout">Logout</string>
 
     <string name="title_edit_profile">EDIT PROFILE</string>
+    <string name="action_add_item">Add item</string>
+
+    <string name="title_add_item">ADD item</string>
+    <string name="et_hint_item_title">Item Title</string>
+    <string name="et_hint_item_price">Item Price ($)</string>
+    <string name="et_hint_item_description">Item Description</string>
+    <string name="et_hint_item_quantity">Item Quantity</string>
+
+    <string name="err_msg_select_item_image">Please select item image.</string>
+    <string name="err_msg_enter_item_title">Please enter item title.</string>
+    <string name="err_msg_enter_item_price">Please enter item price.</string>
+    <string name="err_msg_enter_item_description">Please enter item description.</string>
+    <string name="err_msg_enter_item_quantity">Please enter item quantity.</string>
+
+    <string name="item_uploaded_success_message">Your item is uploaded successfully.</string>
+    <string name="no_items_added_yet">No items added yet!</string>
+    <string name="no_dashboard_item_found">No items found!</string>
+ 
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="item_delete_success_message">Your product is deleted successfully.</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="delete_dialog_title">Delete</string>
+    <string name="delete_dialog_message">Are you sure you want to delete the product?</string>
 </resources>
