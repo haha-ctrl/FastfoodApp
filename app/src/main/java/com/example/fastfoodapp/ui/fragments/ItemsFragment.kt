@@ -116,8 +116,8 @@ class ItemsFragment : BaseFragment() {
     }
 
 
-    fun deleteProduct(productID: String) {
-        showAlertDialogToDeleteProduct(productID)
+    fun deleteProduct(itemID: String) {
+        showAlertDialogToDeleteProduct(itemID)
     }
 
 
@@ -132,12 +132,12 @@ class ItemsFragment : BaseFragment() {
             Toast.LENGTH_SHORT
         ).show()
 
-        // Get the latest products list from cloud firestore.
+        // Get the latest items list from cloud firestore.
         getItemListFromFireStore()
     }
 
 
-    private fun showAlertDialogToDeleteProduct(productID: String) {
+    private fun showAlertDialogToDeleteProduct(itemID: String) {
 
         val builder = AlertDialog.Builder(requireActivity())
         //set title for alert dialog
@@ -149,13 +149,13 @@ class ItemsFragment : BaseFragment() {
         //performing positive action
         builder.setPositiveButton(resources.getString(R.string.yes)) { dialogInterface, _ ->
 
-            // Call the function to delete the product from cloud firestore.
+            // Call the function to delete the item from cloud firestore.
             // START
             // Show the progress dialog.
             showProgressDialog(resources.getString(R.string.please_wait))
 
             // Call the function of Firestore class.
-            FirestoreClass().deleteProduct(this@ItemsFragment, productID)
+            FirestoreClass().deleteProduct(this@ItemsFragment, itemID)
             // END
 
             dialogInterface.dismiss()

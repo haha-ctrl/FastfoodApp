@@ -2,6 +2,7 @@ package com.example.fastfoodapp.ui.adapters
 
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fastfoodapp.R
 import com.example.fastfoodapp.model.Item
+import com.example.fastfoodapp.ui.activities.ItemDetailsActivity
 import com.example.fastfoodapp.ui.fragments.ItemsFragment
+import com.example.fastfoodapp.utils.Constants
 import com.example.fastfoodapp.utils.GlideLoader
 import com.example.fastfoodapp.utils.MSPTextView
 import com.example.fastfoodapp.utils.MSPTextViewBold
@@ -40,7 +43,7 @@ open class MyItemsListAdapter (
         val iv_item_image = holder.itemView.findViewById<ImageView>(R.id.iv_item_image)
         val tv_item_name = holder.itemView.findViewById<MSPTextViewBold>(R.id.tv_item_name)
         val tv_item_price = holder.itemView.findViewById<MSPTextView>(R.id.tv_item_price)
-        val ib_delete_product = holder.itemView.findViewById<ImageButton>(R.id.ib_delete_item)
+        val ib_delete_item = holder.itemView.findViewById<ImageButton>(R.id.ib_delete_item)
 
         if (holder is MyViewHolder) {
             GlideLoader(context).loadItemPicture(model.image, iv_item_image)
@@ -48,10 +51,15 @@ open class MyItemsListAdapter (
             tv_item_name.text = model.title
             tv_item_price.text = "${model.price}đ"
 
-            ib_delete_product.setOnClickListener {
-
+            ib_delete_item.setOnClickListener {
                 fragment.deleteProduct(model.item_id)
+            }
 
+            holder.itemView.setOnClickListener {
+                // Launch Product details screen.
+                val intent = Intent(context, ItemDetailsActivity::class.java)
+                intent.putExtra(Constants.EXTRA_PRODUCT_ID, model.item_id)
+                context.startActivity(intent)
             }
         }
     }

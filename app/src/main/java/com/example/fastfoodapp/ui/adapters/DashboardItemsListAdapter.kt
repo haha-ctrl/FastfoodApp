@@ -16,7 +16,10 @@ import com.example.fastfoodapp.utils.MSPTextViewBold
 class DashboardItemsListAdapter (
     private val context: Context,
     private var list: ArrayList<Item>
+
+
     ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    private var onClickListener: OnClickListener? = null
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
             LayoutInflater.from(context).inflate(
@@ -46,8 +49,28 @@ class DashboardItemsListAdapter (
             )
             tv_dashboard_item_title.text = model.title
             tv_dashboard_item_price.text = "${model.price}đ"
+
+            holder.itemView.setOnClickListener {
+                if (onClickListener != null) {
+                    onClickListener!!.onClick(position, model)
+                }
+            }
         }
     }
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)
+
+
+    interface OnClickListener {
+
+        // Define a function to get the required params when user clicks on the item view in the interface.
+        // START
+        fun onClick(position: Int, item: Item)
+        // END
+    }
+
+
+    fun setOnClickListener(onClickListener: OnClickListener) {
+        this.onClickListener = onClickListener
+    }
 }

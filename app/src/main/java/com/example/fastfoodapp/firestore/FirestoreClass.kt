@@ -301,18 +301,18 @@ class FirestoreClass {
                 Log.e(fragment.javaClass.simpleName, document.documents.toString())
 
                 // Here we have created a new instance for Products ArrayList.
-                val productsList: ArrayList<Item> = ArrayList()
+                val itemsList: ArrayList<Item> = ArrayList()
 
                 // A for loop as per the list of documents to convert them into Products ArrayList.
                 for (i in document.documents) {
 
-                    val product = i.toObject(Item::class.java)!!
-                    product.item_id = i.id
-                    productsList.add(product)
+                    val item = i.toObject(Item::class.java)!!
+                    item.item_id = i.id
+                    itemsList.add(item)
                 }
 
                 // Pass the success result to the base fragment.
-                fragment.successDashboardItemsList(productsList)
+                fragment.successDashboardItemsList(itemsList)
             }
             .addOnFailureListener { e ->
                 // Hide the progress dialog if there is any error which getting the dashboard items list.
@@ -323,10 +323,10 @@ class FirestoreClass {
     }
 
 
-    fun deleteProduct(fragment: ItemsFragment, productId: String) {
+    fun deleteProduct(fragment: ItemsFragment, itemId: String) {
 
         mFireStore.collection(Constants.ITEMS)
-            .document(productId)
+            .document(itemId)
             .delete()
             .addOnSuccessListener {
 
@@ -343,9 +343,38 @@ class FirestoreClass {
 
                 Log.e(
                     fragment.requireActivity().javaClass.simpleName,
-                    "Error while deleting the product.",
+                    "Error while deleting the item.",
                     e
                 )
+            }
+    }
+
+
+    fun getProductDetails(activity: ItemDetailsActivity, itemId: String) {
+
+        // The collection name for PRODUCTS
+        mFireStore.collection(Constants.ITEMS)
+            .document(itemId)
+            .get() // Will get the document snapshots.
+            .addOnSuccessListener { document ->
+
+                // Here we get the item details in the form of document.
+                Log.e(activity.javaClass.simpleName, document.toString())
+
+                // Convert the snapshot to the object of Product data model class.
+                val item = document.toObject(Item::class.java)!!
+
+                // Notify the success result.
+                // START
+                activity.itemDetailsSuccess(item)
+                // END
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is an error.
+                activity.hideProgressDialog()
+
+                Log.e(activity.javaClass.simpleName, "Error while getting the item details.", e)
             }
     }
 }

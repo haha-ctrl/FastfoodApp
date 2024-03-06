@@ -11,8 +11,10 @@ import com.example.fastfoodapp.R
 import com.example.fastfoodapp.databinding.FragmentDashboardBinding
 import com.example.fastfoodapp.firestore.FirestoreClass
 import com.example.fastfoodapp.model.Item
+import com.example.fastfoodapp.ui.activities.ItemDetailsActivity
 import com.example.fastfoodapp.ui.activities.SettingsActivity
 import com.example.fastfoodapp.ui.adapters.DashboardItemsListAdapter
+import com.example.fastfoodapp.utils.Constants
 
 
 class DashboardFragment : BaseFragment() {
@@ -88,6 +90,17 @@ class DashboardFragment : BaseFragment() {
 
             val adapter = DashboardItemsListAdapter(requireActivity(), dashboardItemsList)
             binding.rvDashboardItems.adapter = adapter
+
+            adapter.setOnClickListener(object: DashboardItemsListAdapter.OnClickListener {
+                override fun onClick(position: Int, item: Item) {
+                    // Launch the item details screen from the dashboard.
+                    // START
+                    val intent = Intent(context, ItemDetailsActivity::class.java)
+                    intent.putExtra(Constants.EXTRA_PRODUCT_ID, item.item_id)
+                    startActivity(intent)
+                    // END
+                }
+            })
         } else {
             binding.rvDashboardItems.visibility = View.GONE
             binding.tvNoDashboardItemsFound.visibility = View.VISIBLE
