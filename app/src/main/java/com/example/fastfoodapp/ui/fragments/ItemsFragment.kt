@@ -116,8 +116,8 @@ class ItemsFragment : BaseFragment() {
     }
 
 
-    fun deleteProduct(itemID: String) {
-        showAlertDialogToDeleteProduct(itemID)
+    fun deleteItem(itemID: String) {
+        showAlertDialogToDeleteItem(itemID)
     }
 
 
@@ -137,7 +137,7 @@ class ItemsFragment : BaseFragment() {
     }
 
 
-    private fun showAlertDialogToDeleteProduct(itemID: String) {
+    private fun showAlertDialogToDeleteItem(itemID: String) {
 
         val builder = AlertDialog.Builder(requireActivity())
         //set title for alert dialog
@@ -155,7 +155,7 @@ class ItemsFragment : BaseFragment() {
             showProgressDialog(resources.getString(R.string.please_wait))
 
             // Call the function of Firestore class.
-            FirestoreClass().deleteProduct(this@ItemsFragment, itemID)
+            FirestoreClass().deleteItem(this@ItemsFragment, itemID)
             // END
 
             dialogInterface.dismiss()

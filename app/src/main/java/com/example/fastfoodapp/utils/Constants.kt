@@ -32,7 +32,17 @@ object Constants {
 
     const val USER_ID: String = "user_id"
 
-    const val EXTRA_PRODUCT_ID: String = "extra_item_id"
+    const val EXTRA_ITEM_ID: String = "extra_item_id"
+
+    const val EXTRA_ITEM_OWNER_ID: String = "extra_item_owner_id"
+
+    const val DEFAULT_CART_QUANTITY: String = "1"
+
+    const val CART_ITEMS: String = "cart_items"
+
+    const val ITEM_ID: String = "item_id"
+
+    const val CART_QUANTITY: String = "cart_quantity"
 
     fun showImageChooser(activity: Activity) {
         // An intent for launching the image selection of phone storage.

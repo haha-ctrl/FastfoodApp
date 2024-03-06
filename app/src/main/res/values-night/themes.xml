@@ -19,7 +19,11 @@
     <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="colorPrimaryVariant">@color/colorSecondaryTextDark</item>
+        <item name="android:textColorSecondary">@color/colorOffBlack</item>
         <item name="colorSecondary">@color/item_value_text_color</item>
+        <item name="colorOnSecondary">@color/black</item>
     </style>
     
 

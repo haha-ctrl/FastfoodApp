@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:textColorPrimary">@color/black</item>
         <item name="android:textColorSecondary">@color/colorOffWhite</item>
 
     </style>
@@ -19,6 +20,10 @@
     <style name="SplashScreenTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="colorPrimaryVariant">@color/colorSecondaryText</item>
+        <item name="android:textColorSecondary">@color/colorOffWhite</item>
         <item name="colorSecondary">@color/item_value_text_color_dark</item>
+        <item name="colorOnSecondary">@color/white</item>
     </style>
 </resources>

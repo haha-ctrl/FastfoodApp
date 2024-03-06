@@ -52,17 +52,20 @@ open class MyItemsListAdapter (
             tv_item_price.text = "${model.price}đ"
 
             ib_delete_item.setOnClickListener {
-                fragment.deleteProduct(model.item_id)
+                fragment.deleteItem(model.item_id)
             }
 
             holder.itemView.setOnClickListener {
-                // Launch Product details screen.
+                // Launch Item details screen.
                 val intent = Intent(context, ItemDetailsActivity::class.java)
-                intent.putExtra(Constants.EXTRA_PRODUCT_ID, model.item_id)
+                intent.putExtra(Constants.EXTRA_ITEM_ID, model.item_id)
+                intent.putExtra(Constants.EXTRA_ITEM_OWNER_ID, model.user_id)
                 context.startActivity(intent)
             }
         }
     }
+
+
 
 
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)

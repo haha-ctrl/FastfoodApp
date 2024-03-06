@@ -2,6 +2,7 @@ package com.example.fastfoodapp.ui.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,8 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fastfoodapp.R
 import com.example.fastfoodapp.model.Item
+import com.example.fastfoodapp.ui.activities.ItemDetailsActivity
+import com.example.fastfoodapp.utils.Constants
 import com.example.fastfoodapp.utils.GlideLoader
 import com.example.fastfoodapp.utils.MSPTextView
 import com.example.fastfoodapp.utils.MSPTextViewBold
@@ -51,9 +54,11 @@ class DashboardItemsListAdapter (
             tv_dashboard_item_price.text = "${model.price}đ"
 
             holder.itemView.setOnClickListener {
-                if (onClickListener != null) {
-                    onClickListener!!.onClick(position, model)
-                }
+                // Launch Item details screen.
+                val intent = Intent(context, ItemDetailsActivity::class.java)
+                intent.putExtra(Constants.EXTRA_ITEM_ID, model.item_id)
+                intent.putExtra(Constants.EXTRA_ITEM_OWNER_ID, model.user_id)
+                context.startActivity(intent)
             }
         }
     }

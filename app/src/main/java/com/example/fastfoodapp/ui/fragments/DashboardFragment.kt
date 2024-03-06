@@ -11,6 +11,7 @@ import com.example.fastfoodapp.R
 import com.example.fastfoodapp.databinding.FragmentDashboardBinding
 import com.example.fastfoodapp.firestore.FirestoreClass
 import com.example.fastfoodapp.model.Item
+import com.example.fastfoodapp.ui.activities.CartListActivity
 import com.example.fastfoodapp.ui.activities.ItemDetailsActivity
 import com.example.fastfoodapp.ui.activities.SettingsActivity
 import com.example.fastfoodapp.ui.adapters.DashboardItemsListAdapter
@@ -70,6 +71,11 @@ class DashboardFragment : BaseFragment() {
                 // END
                 return true
             }
+
+            R.id.action_cart -> {
+                startActivity(Intent(activity, CartListActivity::class.java))
+                return true
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -96,7 +102,7 @@ class DashboardFragment : BaseFragment() {
                     // Launch the item details screen from the dashboard.
                     // START
                     val intent = Intent(context, ItemDetailsActivity::class.java)
-                    intent.putExtra(Constants.EXTRA_PRODUCT_ID, item.item_id)
+                    intent.putExtra(Constants.EXTRA_ITEM_ID, item.item_id)
                     startActivity(intent)
                     // END
                 }
