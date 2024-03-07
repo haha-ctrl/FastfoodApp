@@ -89,7 +89,7 @@ class CartListActivity : BaseActivity() {
             rv_cart_items_list.layoutManager = LinearLayoutManager(this@CartListActivity)
             rv_cart_items_list.setHasFixedSize(true)
 
-            val cartListAdapter = CartItemsListAdapter(this@CartListActivity, mCartListItems)
+            val cartListAdapter = CartItemsListAdapter(this@CartListActivity, mCartListItems, true)
             rv_cart_items_list.adapter = cartListAdapter
             var subTotal: Double = 0.0
 
@@ -143,7 +143,6 @@ class CartListActivity : BaseActivity() {
 
 
     fun successItemsListFromFireStore(itemsList: ArrayList<Item>) {
-
         mItemsList = itemsList
 
         getCartItemsList()

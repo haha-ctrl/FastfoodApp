@@ -19,8 +19,11 @@ import com.example.fastfoodapp.utils.MSPTextViewBold
 
 class CartItemsListAdapter (
     private val context: Context,
-    private var list: ArrayList<CartItem>
+    private var list: ArrayList<CartItem>,
+    private val updateCartItems: Boolean
 )  : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
             LayoutInflater.from(context).inflate(
@@ -45,6 +48,7 @@ class CartItemsListAdapter (
         val ib_add_cart_item = holder.itemView.findViewById<ImageButton>(R.id.ib_add_cart_item)
         val ib_delete_cart_item = holder.itemView.findViewById<ImageButton>(R.id.ib_delete_cart_item)
 
+
         if (holder is MyViewHolder) {
 
             GlideLoader(context).loadItemPicture(model.image, iv_cart_item_image)
@@ -57,6 +61,12 @@ class CartItemsListAdapter (
                 ib_remove_cart_item.visibility = View.GONE
                 ib_add_cart_item.visibility = View.GONE
 
+                if (updateCartItems) {
+                    ib_delete_cart_item.visibility = View.VISIBLE
+                } else {
+                    ib_delete_cart_item.visibility = View.GONE
+                }
+
                 tv_cart_quantity.text =
                     context.resources.getString(R.string.lbl_out_of_stock)
 
@@ -67,8 +77,15 @@ class CartItemsListAdapter (
                     )
                 )
             } else {
-                ib_remove_cart_item.visibility = View.VISIBLE
-                ib_add_cart_item.visibility = View.VISIBLE
+                if (updateCartItems) {
+                    ib_remove_cart_item.visibility = View.VISIBLE
+                    ib_add_cart_item.visibility = View.VISIBLE
+                    ib_delete_cart_item.visibility = View.VISIBLE
+                } else {
+                    ib_remove_cart_item.visibility = View.GONE
+                    ib_add_cart_item.visibility = View.GONE
+                    ib_delete_cart_item.visibility = View.GONE
+                }
 
                 tv_cart_quantity.setTextColor(
                     ContextCompat.getColor(

@@ -6,10 +6,7 @@ import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import androidx.fragment.app.Fragment
-import com.example.fastfoodapp.model.Address
-import com.example.fastfoodapp.model.CartItem
-import com.example.fastfoodapp.model.Item
-import com.example.fastfoodapp.model.User
+import com.example.fastfoodapp.model.*
 import com.example.fastfoodapp.ui.activities.*
 import com.example.fastfoodapp.ui.fragments.DashboardFragment
 import com.example.fastfoodapp.ui.fragments.ItemsFragment
@@ -460,12 +457,20 @@ class FirestoreClass {
                     is CartListActivity -> {
                         activity.successCartItemsList(list)
                     }
+
+                    is CheckoutActivity -> {
+                        activity.successCartItemsList(list)
+                    }
                 }
             }
             .addOnFailureListener { e ->
                 // Hide the progress dialog if there is an error based on the activity instance.
                 when (activity) {
                     is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+
+                    is CheckoutActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
@@ -475,7 +480,7 @@ class FirestoreClass {
     }
 
 
-    fun getAllItemsList(activity: CartListActivity) {
+    fun getAllItemsList(activity: Activity) {
         // The collection name for ITEMS
         mFireStore.collection(Constants.ITEMS)
             .get() // Will get the documents snapshots.
@@ -485,7 +490,7 @@ class FirestoreClass {
                 Log.e("Items List", document.documents.toString())
 
                 // Here we have created a new instance for Items ArrayList.
-                val ItemsList: ArrayList<Item> = ArrayList()
+                val itemsList: ArrayList<Item> = ArrayList()
 
                 // A for loop as per the list of documents to convert them into Items ArrayList.
                 for (i in document.documents) {
@@ -493,18 +498,42 @@ class FirestoreClass {
                     val item = i.toObject(Item::class.java)
                     item!!.item_id = i.id
 
-                    ItemsList.add(item)
+                    itemsList.add(item)
                 }
 
-                activity.successItemsListFromFireStore(ItemsList)
+                when (activity) {
+                    is CartListActivity -> {
+                        activity.successItemsListFromFireStore(itemsList)
+                    }
+
+                    // Notify the success result to the base class.
+                    // START
+                    is CheckoutActivity -> {
+                        activity.successItemsListFromFireStore(itemsList)
+                    }
+                    // END
+                }
             }
             .addOnFailureListener { e ->
                 // Hide the progress dialog if there is any error based on the base class instance.
-                activity.hideProgressDialog()
+                when (activity) {
+                    is CartListActivity -> {
+                        activity.hideProgressDialog()
+                    }
+
+                    // Hide the progress dialog.
+                    is CheckoutActivity -> {
+                        activity.hideProgressDialog()
+                    }
+                }
+
 
                 Log.e("Get Item List", "Error while getting all Item list.", e)
             }
     }
+
+
+
 
 
     fun removeItemFromCart(context: Context, cart_id: String) {
@@ -602,7 +631,7 @@ class FirestoreClass {
 
 
     fun getAddressesList(activity: AddressListActivity) {
-        // The collection name for PRODUCTS
+        // The collection name for ITEMS
         mFireStore.collection(Constants.ADDRESSES)
             .whereEqualTo(Constants.USER_ID, getCurrentUserID())
             .get() // Will get the documents snapshots.
@@ -674,6 +703,33 @@ class FirestoreClass {
                 Log.e(
                     activity.javaClass.simpleName,
                     "Error while deleting the address.",
+                    e
+                )
+            }
+    }
+
+
+    fun placeOrder(activity: CheckoutActivity, order: Order) {
+
+        mFireStore.collection(Constants.ORDERS)
+            .document()
+            // Here the userInfo are Field and the SetOption is set to merge. It is for if we wants to merge
+            .set(order, SetOptions.merge())
+            .addOnSuccessListener {
+
+                // Notify the success result.
+                // START
+                // Here call a function of base activity for transferring the result to it.
+                activity.orderPlacedSuccess()
+                // END
+            }
+            .addOnFailureListener { e ->
+
+                // Hide the progress dialog if there is any error.
+                activity.hideProgressDialog()
+                Log.e(
+                    activity.javaClass.simpleName,
+                    "Error while placing an order.",
                     e
                 )
             }

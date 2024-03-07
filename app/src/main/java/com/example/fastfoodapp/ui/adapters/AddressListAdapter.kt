@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.fastfoodapp.R
 import com.example.fastfoodapp.model.Address
 import com.example.fastfoodapp.ui.activities.AddEditAddressActivity
+import com.example.fastfoodapp.ui.activities.CheckoutActivity
 import com.example.fastfoodapp.utils.Constants
 import com.example.fastfoodapp.utils.MSPTextView
 import com.example.fastfoodapp.utils.MSPTextViewBold
@@ -71,13 +72,11 @@ open class AddressListAdapter(
 
 
             if (selectAddress) {
-                holder.itemView.setOnClickListener {
-                    Toast.makeText(
-                        context,
-                        "Selected address : ${model.address}, ${model.zipCode}",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+               holder.itemView.setOnClickListener {
+                   val intent = Intent(context, CheckoutActivity::class.java)
+                   intent.putExtra(Constants.EXTRA_SELECTED_ADDRESS, model)
+                   context.startActivity(intent)
+               }
             }
         }
     }
