@@ -1,5 +1,6 @@
 package com.example.fastfoodapp.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.LinearLayout
@@ -12,6 +13,8 @@ import com.example.fastfoodapp.firestore.FirestoreClass
 import com.example.fastfoodapp.model.CartItem
 import com.example.fastfoodapp.model.Item
 import com.example.fastfoodapp.ui.adapters.CartItemsListAdapter
+import com.example.fastfoodapp.utils.Constants
+import com.example.fastfoodapp.utils.MSPButton
 import com.example.fastfoodapp.utils.MSPTextView
 import com.example.fastfoodapp.utils.MSPTextViewBold
 import java.text.DecimalFormat
@@ -28,6 +31,13 @@ class CartListActivity : BaseActivity() {
         setContentView(R.layout.activity_cart_list)
 
         setupActionBar()
+
+        val btn_checkout = findViewById<MSPButton>(R.id.btn_checkout)
+        btn_checkout.setOnClickListener {
+            val intent = Intent(this@CartListActivity, AddressListActivity::class.java)
+            intent.putExtra(Constants.EXTRA_SELECT_ADDRESS, true)
+            startActivity(intent)
+        }
     }
 
 

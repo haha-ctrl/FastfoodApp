@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
 import com.example.fastfoodapp.R
 import com.example.fastfoodapp.firestore.FirestoreClass
@@ -23,10 +24,13 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
         val tv_edit = findViewById<MSPTextView>(R.id.tv_edit)
         val btn_logout = findViewById<MSPButton>(R.id.btn_logout)
+        val ll_address = findViewById<LinearLayout>(R.id.ll_address)
 
         tv_edit.setOnClickListener(this@SettingsActivity)
 
         btn_logout.setOnClickListener(this@SettingsActivity)
+
+        ll_address.setOnClickListener(this@SettingsActivity)
     }
 
     private fun setupActionBar() {
@@ -96,7 +100,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                 }
                 // END
 
-                // TODO Step 4: Add Logout feature when user clicks on logout button.
+                // Add Logout feature when user clicks on logout button.
                 // START
                 R.id.btn_logout -> {
 
@@ -108,6 +112,11 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
                     finish()
                 }
                 // END
+
+                R.id.ll_address -> {
+                    val intent = Intent(this@SettingsActivity, AddressListActivity::class.java)
+                    startActivity(intent)
+                }
             }
         }
     }
