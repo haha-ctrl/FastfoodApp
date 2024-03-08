@@ -13,11 +13,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FastfoodApp"
         tools:targetApi="31">
+
+        <activity
+            android:name=".ui.activities.SoldItemDetailsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreenTheme" />
+        <activity
+            android:name=".ui.activities.MyOrderDetailsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashScreenTheme" />
         <activity
             android:name=".ui.activities.CheckoutActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/SplashScreenTheme"/>
+            android:theme="@style/SplashScreenTheme" />
         <activity
             android:name=".ui.activities.AddEditAddressActivity"
             android:exported="false"

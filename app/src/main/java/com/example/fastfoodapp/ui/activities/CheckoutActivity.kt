@@ -25,6 +25,7 @@ class CheckoutActivity : BaseActivity() {
     private lateinit var mCartItemsList: ArrayList<CartItem>
     private var mSubTotal: Double = 0.0
     private var mTotalAmount: Double = 0.0
+    private lateinit var mOrderDetails: Order
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -165,7 +166,7 @@ class CheckoutActivity : BaseActivity() {
 
         // Now prepare the order details based on all the required details.
         // START
-        val order = Order(
+        mOrderDetails = Order(
             FirestoreClass().getCurrentUserID(),
             mCartItemsList,
             mAddressDetails!!,
@@ -174,26 +175,36 @@ class CheckoutActivity : BaseActivity() {
             mSubTotal.toString(),
             "10000", // The Shipping Charge is fixed as 10.000 dong for now in our case.
             mTotalAmount.toString(),
+            System.currentTimeMillis()
         )
         // END
 
         // Call the function to place the order in the cloud firestore.
         // START
-        FirestoreClass().placeOrder(this@CheckoutActivity, order)
+        FirestoreClass().placeOrder(this@CheckoutActivity, mOrderDetails)
         // END
     }
 
 
     fun orderPlacedSuccess() {
+        FirestoreClass().updateAllDetails(this@CheckoutActivity, mCartItemsList, mOrderDetails)
+    }
 
+
+    fun allDetailsUpdatedSuccessfully() {
+
+        // Move the piece of code from OrderPlaceSuccess to here.
+        // START
+        // Hide the progress dialog.
         hideProgressDialog()
 
-        Toast.makeText(this@CheckoutActivity, "Your order was placed successfully.", Toast.LENGTH_SHORT)
+        Toast.makeText(this@CheckoutActivity, "Your order placed successfully.", Toast.LENGTH_SHORT)
             .show()
 
         val intent = Intent(this@CheckoutActivity, DashboardActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+        // END
     }
 }

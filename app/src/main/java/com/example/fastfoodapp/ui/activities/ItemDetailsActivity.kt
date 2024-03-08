@@ -20,6 +20,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class ItemDetailsActivity : BaseActivity(), View.OnClickListener {
     private var mItemId: String = ""
     private lateinit var mItemDetails: Item
+    private var mItemOwnerId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,16 +33,16 @@ class ItemDetailsActivity : BaseActivity(), View.OnClickListener {
             Log.i("Item Id", mItemId)
         }
 
-        var itemOwnerId: String = ""
+        // var itemOwnerId: String = ""
 
         if (intent.hasExtra(Constants.EXTRA_ITEM_OWNER_ID)) {
-            itemOwnerId =
+            mItemOwnerId =
                 intent.getStringExtra(Constants.EXTRA_ITEM_OWNER_ID)!!
         }
 
         val btn_add_to_cart = findViewById<MSPButton>(R.id.btn_add_to_cart)
         val btn_go_to_cart = findViewById<MSPButton>(R.id.btn_go_to_cart)
-        if (FirestoreClass().getCurrentUserID() == itemOwnerId) {
+        if (FirestoreClass().getCurrentUserID() == mItemOwnerId) {
             btn_add_to_cart.visibility = View.GONE
             btn_go_to_cart.visibility = View.GONE
         } else {
@@ -157,6 +158,7 @@ class ItemDetailsActivity : BaseActivity(), View.OnClickListener {
 
         val cartItem = CartItem(
             FirestoreClass().getCurrentUserID(),
+            mItemOwnerId,
             mItemId,
             mItemDetails.title,
             mItemDetails.price,
